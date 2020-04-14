@@ -4,7 +4,7 @@
       <div class="left-col col-12 order-1 col-sm-12 order-sm-1 col-md-7 order-md-0">
         <div class="game">
           <LeftColNav 
-            :init-categories="categories"
+            :categories="categories"
           />
           <div class="account-list">
             <ul class="row a-item1" style="padding: 0;">
@@ -25,11 +25,11 @@
       </div>
       <div class="right-col col-12 order-0 col-sm-12 order-sm-0 col-md-5 order-md-1">
         <RightCol 
-          :init-total="total"
-          :init-unpaid="unpaid"
-          :init-me-unpiad="meUnpaid"
-          :init-my-group="myGroup"
-          :init-all-members="allMembers"
+          :total="total"
+          :unpaid="unpaid"
+          :me-unpaid="meUnpaid"
+          :my-group="myGroup"
+          :all-members="allMembers"
         />
       </div>
     </div>
@@ -42,6 +42,59 @@ import RightCol from '../components/RightCol'
 import LeftCol from '../components/LeftCol'
 import LeftColNav from '../components/LeftColNav'
 import walikanAPI from '../apis/walikan'
+
+export default {
+  name: 'Walikan',
+  components: {
+    LeftCol,
+    LeftColNav,
+    RightCol
+  },
+  data() {
+    return {
+      walikan: [],
+      categories: [],
+      categoryId: [],
+      total: -1,
+      unpaid: -1,
+      meUnpaid: -1,
+      myGroup: [],
+      allMembers: []
+    }
+  },
+  created() {
+    const { categoryId } = this.$route.query
+    this.fetchWalikan({ categoryId })
+  },
+  beforeRouteUpdate (to, from, next) {
+    // console.log('to:',to)
+    const { categoryId } = to.query
+    this.fetchWalikan({ categoryId })
+    next()
+  },
+  methods: {
+    async fetchWalikan ({ categoryId = '' }) {
+      try {
+        const { data, statusText } = await walikanAPI.getWalikan({ categoryId })
+
+        if (statusText !== 'OK') {
+          throw new Error(statusText)
+        }
+
+        this.walikan = data.walikan
+        this.categories = data.categories
+        this.categoryId =data.categoryId
+        this.myGroup = data.myGroup
+        this.total = data.total
+        this.unpaid = data.unpaid
+        this.meUnpaid = data.meUnpaid
+
+      } catch (err) {
+        console.log('err:', err)
+      }
+    }
+  }
+}
 
 const dummyUser = {
   currentUser: {
@@ -341,62 +394,6 @@ const dummyData = {
       "chu",
       "lele"
   ]
-}
-
-export default {
-  name: 'Walikan',
-  components: {
-    LeftCol,
-    LeftColNav,
-    RightCol
-  },
-  data() {
-    return {
-      walikan: [],
-      categories: [],
-      categoryId: [],
-      total: -1,
-      unpaid: -1,
-      meUnpaid: -1,
-      myGroup: [],
-      allMembers: [],
-    }
-  },
-  created() {
-    const { categoryId } = this.$route.query
-    this.fetchWalikan()
-  },
-  methods: {
-    fetchWalikan() {
-      this.walikan = dummyData.walikan
-      this.categories = dummyData.categories
-      this.categoryId =dummyData.categoryId
-      this.total = dummyData.total
-      this.unpaid = dummyData.unpaid
-      this.myGroup = dummyData.myGroup
-      this.meUnpaid = dummyData.meUnpaid
-    }
-    // async fetchWalikan ({ categoryId }) {
-    //   try {
-    //     const res = await walikanAPI.getWalikan({ categoryId })
-    //     const { data, statusText } = res
-
-    //     if (statusText !== 'OK') {
-    //       throw new Error(statusText)
-    //     }
-
-    //     this.walikan = data.walikan
-    //     this.categories = data.categories
-    //     this.categoryId =data.categoryId
-    //     this.total = data.total
-    //     this.unpaid = data.unpaid
-    //     this.meUnpaid = data.meUnpaid
-
-    //   } catch (err) {
-    //     console.log('err:', err)
-    //   }
-    // }
-  }
 }
 </script>
 

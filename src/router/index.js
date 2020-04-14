@@ -31,6 +31,16 @@ export default new Router({
       component: Walikan
     },
     {
+      path: '/walikan/create',
+      name: 'walikan-create',
+      component: () => import('../views/WalikanCreate.vue')
+    },
+    {
+      path: '/walikan/:id/edit',
+      name: 'walikan-edit',
+      component: () => import('../views/WalikanEdit.vue')
+    },
+    {
       path: '*', //由上而下都找不到匹配路由，便會連至此路由；*在此代表所有網址
       name: 'not-found',
       component: NotFound

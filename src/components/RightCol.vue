@@ -3,23 +3,21 @@
     <div class="game-info">
       <div class="rc pl-0 mt-4 nav-top text-center">
         <span class="hi">
-          Hi, {{ currentUser.name }} !
+          Hi, !
         </span>
-        
         <router-link
           to="/admin"
-          v-if="currentUser.isAdmin" 
           class="admin">
           Admin
         </router-link>
 
-        <router-link 
+        <!-- <router-link 
           v-else 
           to="/users/id" 
           class="profile"
         >
           Profile
-        </router-link>
+        </router-link> -->
         
         <div class="menu-control">
           <button class="menu">
@@ -137,34 +135,34 @@ const dummyUser = {
 export default {
   name: 'LeftCol',
   props: {
-    initTotal: {
+    total: {
       type: Number,
       default: -1
     },
-    initUnpaid: {
+    unpaid: {
       type: Number,
       default: -1
     },
-    initMeUnpiad: {
+    meUnpaid: {
       type: Number,
       default: -1
     },
-    initMyGroup: {
+    myGroup: {
       type: Array,
       required: true
     },
-    initAllMembers: {
-      type: Array,
-      required: true
-    },
+    // initAllMembers: {
+    //   type: Array,
+    //   required: true
+    // },
   },
   data () {
     return {
-      total: this.initTotal,
-      unpaid: this.initUnpaid,
-      meUnpaid: this.initMeUnpiad,
-      myGroup: this.initMyGroup,
-      allMembers: this.initMyGroup,
+      // total: this.initTotal,
+      // unpaid: this.initUnpaid,
+      // meUnpaid: this.initMeUnpiad,
+      // myGroup: this.initMyGroup,
+      // allMembers: this.initMyGroup,
       currentUser: {
         id: -1,
         name: '',

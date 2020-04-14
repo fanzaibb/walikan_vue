@@ -104,6 +104,7 @@ export default {
         })
           const { data } = res
           localStorage.setItem('token', data.token)
+          console.log("login res:", res)
           this.$router.push('/walikan')
       
       }catch(error) {
